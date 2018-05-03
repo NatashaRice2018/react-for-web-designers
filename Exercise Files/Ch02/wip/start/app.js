@@ -22,4 +22,5 @@
 
   ReactDOM.render(<ProductCustomizer/>,
     document.getElementById('react-root'));
-})();
+})
+();
