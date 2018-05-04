@@ -42,11 +42,16 @@ function ColorSelector(props) {
         );
       });
     }
+    
+    function onColorChange(evt)
+    {
+      props.handelColorChange(evt.target.value);
+    }
 
     return (
       <div className="field-group">
         <label htmlFor="color-options">Color:</label>
-        <select defaultValue={props.color} name="colorOptions" id="color-options">
+        <select defaultValue={props.color} name="colorOptions" id="color-options" onChange={onColorChange}>
           {colorOptions()}
         </select>
       </div>
@@ -76,11 +81,30 @@ function ColorSelector(props) {
      var availColors = window.Inventory.bySize[selectedSize];
      
      this.setState({
-        colors: availColors
+        colors: availColors,
+        size: selectedSize
+     });
+    },
+    
+    handelColorChange: function(selectedColor)
+    {
+     console.log('parent size color', selectedColor);
+     var availSize = window.Inventory.byColor[selectedColor];
+     
+     this.setState({
+        color: selectedColor,
+        sizes: availSize
      });
      
-     
+     if(availSize.indexOf(this.state.size) === -1)
+     {
+       this.setState({ 
+         size: availSize[0]
+       })
+     }
     },
+    
+    
 
 
     render: function() {
@@ -92,7 +116,7 @@ function ColorSelector(props) {
       
       	<div className="selectors">
       	<SizeSelector size={this.state.size} sizes={this.state.sizes} handelSizeChange={this.handelSizeChange}/> 
-      	<ColorSelector color={this.state.color} colors={this.state.colors} />
+      	<ColorSelector color={this.state.color} colors={this.state.colors} handelColorChange={this.handelColorChange} />
       	</div>
       </div>
       );
