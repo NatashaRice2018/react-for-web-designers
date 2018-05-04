@@ -13,10 +13,17 @@
         )
       });
     }
+    
+    function onSizeChange(evt)
+    {
+      //console.log('change event fired', evt.target.value);
+      props.handelSizeChange(evt.target.value);
+    }
+    
     return (
       <div className="field-group">
 								<label htmlFor="size-options">Size:</label>
-								<select defaultValue={props.size} name="sizeOptions" id="size-options">
+								<select defaultValue={props.size} name="sizeOptions" id="size-options" onChange={onSizeChange}>
 								//ID not a great choice is you are using a component that will be reused
 									//could wrap all in the label
 									{sizeOptions()}
@@ -62,6 +69,18 @@ function ColorSelector(props) {
         sizes: sizes
       };
     },
+    
+    handelSizeChange: function(selectedSize)
+    {
+     console.log('parent size change', selectedSize);
+     var availColors = window.Inventory.bySize[selectedSize];
+     
+     this.setState({
+        colors: availColors
+     });
+     
+     
+    },
 
 
     render: function() {
@@ -72,7 +91,7 @@ function ColorSelector(props) {
       </div>
       
       	<div className="selectors">
-      	<SizeSelector size={this.state.size} sizes={this.state.sizes}/> 
+      	<SizeSelector size={this.state.size} sizes={this.state.sizes} handelSizeChange={this.handelSizeChange}/> 
       	<ColorSelector color={this.state.color} colors={this.state.colors} />
       	</div>
       </div>
